@@ -1,3 +1,5 @@
+use std::rc::Rc;
+
 use crate::BinaryTreeNode;
 pub fn main_binary_tree() {
     let nodeleft3 = BinaryTreeNode {
@@ -12,33 +14,39 @@ pub fn main_binary_tree() {
     };
     let nodeleft2 = BinaryTreeNode {
         data: 30,
-        left: Some(Box::new(nodeleft3)),
+        left: Some(Rc::new(nodeleft3)),
         right: None,
     };
     let noderight2 = BinaryTreeNode {
         data: 60,
         left: None,
-        right: Some(Box::new(noderight3)),
+        right: Some(Rc::new(noderight3)),
     };
     let node1 = BinaryTreeNode {
         data: 56,
-        left: Some(Box::new(nodeleft2)),
-        right: Some(Box::new(noderight2))
+        left: Some(Rc::new(nodeleft2)),
+        right: Some(Rc::new(noderight2))
     };
-    search_binary_tree(15, Box::new(node1));
+    search_binary_tree(10, Rc::new(node1));
 }  
-
-fn search_binary_tree(val: i32, root: Box<BinaryTreeNode>) {
+fn search_binary_tree(val: i32, root: Rc<BinaryTreeNode>) {
+    // println!("{}", Rc::strong_count(&root));
     if root.data == val {
         dbg!(&root);
     } else if val > root.data {
-        match root.right {
-            Some(new_root) => search_binary_tree(val, new_root),
+        match &root.right {
+            Some(rc_root) => {
+                let new_root = Rc::clone(&rc_root);
+                search_binary_tree(val, new_root)
+                },
             None => println!("{val} is not found anywhere in this tree")
         }
     } else if val < root.data {
-        match root.left {
-            Some(new_root) => search_binary_tree(val, new_root),
+        match &root.left {
+            Some(rc_root) => {
+                let new_root = Rc::clone(&rc_root);
+                search_binary_tree(val, new_root)
+                },
             None => println!("{val} is not found anywhere in this tree")
         }
     } else {
