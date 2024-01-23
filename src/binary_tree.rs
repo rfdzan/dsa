@@ -25,12 +25,11 @@ pub fn main_binary_tree() {
     let node1 = BinaryTreeNode {
         data: 56,
         left: Some(Rc::new(nodeleft2)),
-        right: Some(Rc::new(noderight2))
+        right: Some(Rc::new(noderight2)),
     };
-    search_binary_tree(10, Rc::new(node1));
-}  
+    search_binary_tree(30, Rc::new(node1));
+}
 fn search_binary_tree(val: i32, root: Rc<BinaryTreeNode>) {
-    // println!("{}", Rc::strong_count(&root));
     if root.data == val {
         dbg!(&root);
     } else if val > root.data {
@@ -38,18 +37,16 @@ fn search_binary_tree(val: i32, root: Rc<BinaryTreeNode>) {
             Some(rc_root) => {
                 let new_root = Rc::clone(&rc_root);
                 search_binary_tree(val, new_root)
-                },
-            None => println!("{val} is not found anywhere in this tree")
+            }
+            None => println!("{val} is not found anywhere in this tree"),
         }
-    } else if val < root.data {
+    } else {
         match &root.left {
             Some(rc_root) => {
                 let new_root = Rc::clone(&rc_root);
                 search_binary_tree(val, new_root)
-                },
-            None => println!("{val} is not found anywhere in this tree")
+            }
+            None => println!("{val} is not found anywhere in this tree"),
         }
-    } else {
-        println!("the else block")
     }
 }
