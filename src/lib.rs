@@ -1,7 +1,7 @@
-use std::{rc::Rc, fmt::Debug};
+use std::{fmt::Debug, rc::Rc};
 
-pub mod binary_tree;
 pub mod bfs;
+pub mod binary_tree;
 
 #[derive(Debug)]
 pub struct BinaryTreeNode {

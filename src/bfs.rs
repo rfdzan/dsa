@@ -1,7 +1,5 @@
-
-use std::collections::{VecDeque, HashMap};
-use std::fs::{self, ReadDir};
-use std::path::{Path, PathBuf};
+use std::collections::{HashMap, VecDeque};
+use std::path::PathBuf;
 pub fn bfs_main() {
     let start = PathBuf::from("/home/user/Documents/rust_proj/dsa_made_easy/test_dir/");
     let _ = bfs(start);
@@ -29,7 +27,6 @@ fn bfs(start: PathBuf) {
                 }
                 deque.push_back(node_pathbuf);
             }
-
         }
     }
 }
