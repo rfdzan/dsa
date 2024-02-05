@@ -1,20 +1,20 @@
 use std::collections::{HashMap, VecDeque};
+use std::io::{self, Write};
 use std::os::unix::ffi::OsStrExt;
 use std::path::PathBuf;
-use std::io::{self, Write};
 pub fn bfs_main() {
     let start = PathBuf::from("/home/user/Documents/rust_proj/dsa_made_easy/test_dir/");
     match bfs(start) {
         Err(e) => println!("{e}"),
-        Ok(_) => ()
+        Ok(_) => (),
     }
 }
-fn bfs(start: PathBuf) -> io::Result<()>{
+fn bfs(start: PathBuf) -> io::Result<()> {
     let mut visited_vertices = HashMap::with_capacity(100);
     let mut deque = VecDeque::with_capacity(100);
     visited_vertices.insert(start.clone(), false);
     deque.push_back(start);
-    
+
     let mut stdout = io::stdout().lock();
     while deque.len() > 0 {
         let current_node = deque.pop_front();
@@ -31,10 +31,10 @@ fn bfs(start: PathBuf) -> io::Result<()>{
             visited_vertices.insert(path.clone(), true);
             match std::fs::read_dir(&path) {
                 Err(e) => {
-                    writeln!(stdout, "{e}")?;
+                    writeln!(stdout, "{e} {path:?}")?;
                     deque.push_back(path);
                     continue;
-                },
+                }
                 Ok(nodes) => {
                     for node in nodes {
                         let node_pathbuf = node?.path();
