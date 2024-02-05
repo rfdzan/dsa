@@ -3,7 +3,7 @@ use std::io::{self, Write};
 
 use std::path::PathBuf;
 pub fn bfs_main() {
-    let start = PathBuf::from("/home/user");
+    let start = PathBuf::from("/home/user/Documents");
     match bfs(start) {
         Err(e) => println!("{e}"),
         Ok(_) => (),
@@ -39,7 +39,8 @@ fn bfs(start: PathBuf) -> io::Result<()> {
                     for node in nodes {
                         match node {
                             Err(e) => {
-                                writeln!(stdout, "{e}, {path:?}")?;
+                                writeln!(stdout, "{e}, {:?}", path)?;
+                                deque.push_back(path.clone());
                                 continue;
                             },
                             Ok(direntry) => {
