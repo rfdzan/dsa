@@ -1,7 +1,7 @@
 use std::collections::{HashMap, VecDeque};
 use std::path::PathBuf;
 pub fn bfs_main() {
-    let start = PathBuf::from("/home/user/Documents/rust_proj/dsa_made_easy/test_dir/");
+    let start = PathBuf::from("/home/user/Documents/rust_proj/");
     let _ = bfs(start);
 }
 fn bfs(start: PathBuf) {
@@ -15,6 +15,10 @@ fn bfs(start: PathBuf) {
         if let Some(path) = current_node {
             println!("{:?}", &path);
             if path.is_file() {
+                visited_vertices.insert(path.clone(), true);
+                continue;
+            }
+            if path.is_symlink() {
                 visited_vertices.insert(path.clone(), true);
                 continue;
             }
