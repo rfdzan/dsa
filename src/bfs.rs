@@ -1,36 +1,51 @@
 use std::collections::{HashMap, VecDeque};
+use std::os::unix::ffi::OsStrExt;
 use std::path::PathBuf;
+use std::io::{self, Write};
 pub fn bfs_main() {
-    let start = PathBuf::from("/home/user/Documents/rust_proj/");
-    let _ = bfs(start);
+    let start = PathBuf::from("/home/user/Documents/rust_proj/dsa_made_easy/test_dir/");
+    match bfs(start) {
+        Err(e) => println!("{e}"),
+        Ok(_) => ()
+    }
 }
-fn bfs(start: PathBuf) {
+fn bfs(start: PathBuf) -> io::Result<()>{
     let mut visited_vertices = HashMap::with_capacity(100);
     let mut deque = VecDeque::with_capacity(100);
-    visited_vertices.insert(start.clone(), true);
+    visited_vertices.insert(start.clone(), false);
     deque.push_back(start);
-
+    
+    let mut stdout = io::stdout().lock();
     while deque.len() > 0 {
         let current_node = deque.pop_front();
         if let Some(path) = current_node {
-            println!("{:?}", &path);
-            if path.is_file() {
-                visited_vertices.insert(path.clone(), true);
+            if let Some(true) = visited_vertices.get(&path) {
                 continue;
             }
-            if path.is_symlink() {
+            writeln!(stdout, "{path:?}")?;
+            if path.is_file() || path.is_symlink() {
                 visited_vertices.insert(path.clone(), true);
+                deque.push_back(path);
                 continue;
             }
             visited_vertices.insert(path.clone(), true);
-            let nodes = std::fs::read_dir(path).unwrap();
-            for node in nodes {
-                let node_pathbuf = node.unwrap().path();
-                if let Some(true) = visited_vertices.get(&node_pathbuf) {
+            match std::fs::read_dir(&path) {
+                Err(e) => {
+                    writeln!(stdout, "{e}")?;
+                    deque.push_back(path);
                     continue;
+                },
+                Ok(nodes) => {
+                    for node in nodes {
+                        let node_pathbuf = node?.path();
+                        if let Some(true) = visited_vertices.get(&node_pathbuf) {
+                            continue;
+                        }
+                        deque.push_back(node_pathbuf);
+                    }
                 }
-                deque.push_back(node_pathbuf);
             }
         }
     }
+    Ok(())
 }
