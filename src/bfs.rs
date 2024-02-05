@@ -3,15 +3,15 @@ use std::io::{self, Write};
 
 use std::path::PathBuf;
 pub fn bfs_main() {
-    let start = PathBuf::from("/home/user/Documents/rust_proj/dsa_made_easy/test_dir/");
+    let start = PathBuf::from("/home/user");
     match bfs(start) {
         Err(e) => println!("{e}"),
         Ok(_) => (),
     }
 }
 fn bfs(start: PathBuf) -> io::Result<()> {
-    let mut visited_vertices = HashMap::with_capacity(100);
-    let mut deque = VecDeque::with_capacity(100);
+    let mut visited_vertices = HashMap::with_capacity(1000);
+    let mut deque = VecDeque::with_capacity(1000);
     visited_vertices.insert(start.clone(), false);
     deque.push_back(start);
 
@@ -37,11 +37,19 @@ fn bfs(start: PathBuf) -> io::Result<()> {
                 }
                 Ok(nodes) => {
                     for node in nodes {
-                        let node_pathbuf = node?.path();
-                        if let Some(true) = visited_vertices.get(&node_pathbuf) {
-                            continue;
+                        match node {
+                            Err(e) => {
+                                writeln!(stdout, "{e}, {path:?}")?;
+                                continue;
+                            },
+                            Ok(direntry) => {
+                                let node_pathbuf = direntry.path();
+                                if let Some(true) = visited_vertices.get(&node_pathbuf) {
+                                    continue;
+                                }
+                                deque.push_back(node_pathbuf);
+                            }
                         }
-                        deque.push_back(node_pathbuf);
                     }
                 }
             }
