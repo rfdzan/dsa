@@ -1,5 +1,5 @@
-use dsa_made_easy::{bfs, binary_tree::main_binary_tree};
+use dsa_made_easy::{bfs};
 fn main() {
     // let _ = main_binary_tree();
-    let _ = bfs::bfs_main();
+    bfs::bfs_main();
 }

@@ -1,6 +1,6 @@
 use std::collections::{HashMap, VecDeque};
 use std::io::{self, Write};
-use std::os::unix::ffi::OsStrExt;
+
 use std::path::PathBuf;
 pub fn bfs_main() {
     let start = PathBuf::from("/home/user/Documents/rust_proj/dsa_made_easy/test_dir/");
@@ -16,7 +16,7 @@ fn bfs(start: PathBuf) -> io::Result<()> {
     deque.push_back(start);
 
     let mut stdout = io::stdout().lock();
-    while deque.len() > 0 {
+    while !deque.is_empty() {
         let current_node = deque.pop_front();
         if let Some(path) = current_node {
             if let Some(true) = visited_vertices.get(&path) {

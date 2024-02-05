@@ -35,7 +35,7 @@ fn search_binary_tree(val: i32, root: Rc<BinaryTreeNode>) {
     } else if val > root.data {
         match &root.right {
             Some(rc_root) => {
-                let new_root = Rc::clone(&rc_root);
+                let new_root = Rc::clone(rc_root);
                 search_binary_tree(val, new_root)
             }
             None => println!("{val} is not found anywhere in this tree"),
@@ -43,7 +43,7 @@ fn search_binary_tree(val: i32, root: Rc<BinaryTreeNode>) {
     } else {
         match &root.left {
             Some(rc_root) => {
-                let new_root = Rc::clone(&rc_root);
+                let new_root = Rc::clone(rc_root);
                 search_binary_tree(val, new_root)
             }
             None => println!("{val} is not found anywhere in this tree"),
