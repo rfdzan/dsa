@@ -1,6 +1,8 @@
-use std::rc::Rc;
+use std::{rc::Rc, fmt::Debug};
 
 pub mod binary_tree;
+pub mod bfs;
+
 #[derive(Debug)]
 pub struct BinaryTreeNode {
     pub data: i32,
