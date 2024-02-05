@@ -16,17 +16,20 @@ fn bfs(start: PathBuf) {
         let current_node = deque.pop_front();
         if let Some(path) = current_node {
             println!("{:?}", &path);
-            visited_vertices.insert(path.clone(), true);
-            if path.is_dir() {
-                let nodes = std::fs::read_dir(path).unwrap();
-                for node in nodes {
-                    let node_pathbuf = node.unwrap().path();
-                    if let Some(true) = visited_vertices.get(&node_pathbuf) {
-                        continue
-                    }
-                    deque.push_back(node_pathbuf);
-                }
+            if path.is_file() {
+                visited_vertices.insert(path.clone(), true);
+                continue;
             }
+            visited_vertices.insert(path.clone(), true);
+            let nodes = std::fs::read_dir(path).unwrap();
+            for node in nodes {
+                let node_pathbuf = node.unwrap().path();
+                if let Some(true) = visited_vertices.get(&node_pathbuf) {
+                    continue;
+                }
+                deque.push_back(node_pathbuf);
+            }
+
         }
     }
 }
