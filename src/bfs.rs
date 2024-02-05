@@ -42,7 +42,7 @@ fn bfs(start: PathBuf) -> io::Result<()> {
                                 writeln!(stdout, "{e}, {:?}", path)?;
                                 deque.push_back(path.clone());
                                 continue;
-                            },
+                            }
                             Ok(direntry) => {
                                 let node_pathbuf = direntry.path();
                                 if let Some(true) = visited_vertices.get(&node_pathbuf) {
